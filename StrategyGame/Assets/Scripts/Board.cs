@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour {
-	private Tile[10,10] board;
+public class Board{
+	private Tile[,] board;
 	public Board() {
-		foreach (Tile tile in board)
+        board = new Tile[4, 4];
+		for (int i = 0; i < board.GetLength(0); i++)
 		{
-			tile = new Tile();
+			 for(int j = 0; j < board.GetLength(1); j++)
+            {
+                board[i, j] = new Tile();
+            }
 		}
 	}
+
+    public Tile[,] getBoard()
+    {
+        return board;
+    }
+
 }

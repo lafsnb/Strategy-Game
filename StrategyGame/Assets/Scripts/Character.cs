@@ -1,28 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Character : MonoBehaviour {
+public class Character{
 
 	private int hp;
 	private int movement;
 	private int atk;
 	private int range;
+    private int speed;
 	private int x;
 	private int y;
 	private int lvl;
 
-	public Character(int x, int y) {
+	public Character(int y, int x) {
 		hp = 2;
-		movement = 3;
+		movement = 2;
 		atk = 1;
 		range = 1;
+        speed = 0;
 		lvl = 1;
 		this.x = x; this.y = y;
 	}
 
 	public void move(int x, int y) {
-		if(Math.abs(this.x - x) + Math.abs(this.y - y) <= movement) {
+		if(Math.Abs(this.x - x) + Math.Abs(this.y - y) <= movement) {
 			this.x = x;
 			this.y = y;
 		}
@@ -73,4 +76,14 @@ public class Character : MonoBehaviour {
 		return lvl;
 	}
 
+    public int getSpeed()
+    {
+        return speed;
+    }
+
+    public int getInitiative(int n)
+    {
+        return n + speed;
+    }
+    
 }
