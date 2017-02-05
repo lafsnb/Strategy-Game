@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Board{
+﻿
+public class Board {
 	private Tile[,] board;
 	public Board() {
         board = new Tile[4, 4];
