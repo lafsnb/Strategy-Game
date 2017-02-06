@@ -35,7 +35,7 @@ public class BattleState : MonoBehaviour {
                 {
                     cubes[i, j].GetComponent<Renderer>().material.color = new Color(255, 255, 255);
                 }
-                else if(current.getY() == i && current.getX() == j)
+                else if(current.getY() == i && current.x == j) // changed the getter to default
                 {
                     cubes[i, j].GetComponent<Renderer>().material.color = new Color(255, 0, 0);
                 }
@@ -78,7 +78,7 @@ public class BattleState : MonoBehaviour {
                 // the problem is that I don't know how to change enemy's position
                 // Also I think this is probably not the best way to do it.
                 foreach(Character c in enemies) {
-                    if (c.getX() == i && c.getY() == j) {
+                    if (c.x == i && c.getY() == j) {
                         Instantiate(enemyPrefab, cubes[i, j].transform.position, Quaternion.identity);
                     }
                 }
@@ -91,9 +91,9 @@ public class BattleState : MonoBehaviour {
     {
         foreach (Character c in list)
         {
-            if (c.getX() < board.GetLength(1) && c.getY() < board.GetLength(0))
+            if (c.x < board.GetLength(1) && c.getY() < board.GetLength(0))
             {
-                board[c.getY(), c.getX()].occupy();
+                board[c.getY(), c.x].occupy();
             }
         }
     }
@@ -103,7 +103,4 @@ public class BattleState : MonoBehaviour {
         current = order.getNext();
     }
 
-    private void spawnEnemy(int i, int j) {
-        Instantiate(enemyPrefab, transform);
-    }
 }

@@ -10,7 +10,7 @@ public class Character{
 	private int atk;
 	private int range;
     private int speed;
-	private int x;
+	public int x {get; private set;}
 	private int y;
 	private int lvl;
 
@@ -64,9 +64,9 @@ public class Character{
 		return range;
 	}
 
-	public int getX() {
-		return x;
-	}
+	// public int getX() {
+	// 	return x;
+	// }
 
 	public int getY() {
 		return y;
