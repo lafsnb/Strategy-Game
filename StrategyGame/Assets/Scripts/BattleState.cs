@@ -8,6 +8,9 @@ public class BattleState : MonoBehaviour {
     private IList<Character> enemies;
     private TurnOrder order;
     private Character current;
+    public GameObject cubePrefab;
+    public GameObject enemyPrefab;
+    
 
     // Use this for initialization
     void Start () {
@@ -64,9 +67,21 @@ public class BattleState : MonoBehaviour {
         {
             for (int j = 0; j < cubes.GetLength(1); j++)
             {
-                cubes[i,j] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                // This creates a instance of the cube prefab, we could also do this with
+                // players and enemies.
+                cubes[i, j] = Instantiate(cubePrefab); // different way of doing it.
+                // cubes[i,j] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cubes[i,j].transform.position = new Vector3(i, 0, j);
                 cubes[i, j].transform.parent = this.transform;
+
+                // created an enemy where the enemy is supposed to go
+                // the problem is that I don't know how to change enemy's position
+                // Also I think this is probably not the best way to do it.
+                foreach(Character c in enemies) {
+                    if (c.getX() == i && c.getY() == j) {
+                        Instantiate(enemyPrefab, cubes[i, j].transform.position, Quaternion.identity);
+                    }
+                }
                 
             }
         }
@@ -86,5 +101,9 @@ public class BattleState : MonoBehaviour {
     private void nextTurn()
     {
         current = order.getNext();
+    }
+
+    private void spawnEnemy(int i, int j) {
+        Instantiate(enemyPrefab, transform);
     }
 }
