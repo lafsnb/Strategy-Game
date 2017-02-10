@@ -8,8 +8,11 @@ public class BattleState : MonoBehaviour {
     private IList<Character> enemies;
     private TurnOrder order;
     private Character current;
+    private Vector3 tempPos;
     public GameObject cubePrefab;
     public GameObject enemyPrefab;
+    public GameObject playerPrefab;
+
     
 
     // Use this for initialization
@@ -74,17 +77,25 @@ public class BattleState : MonoBehaviour {
                 cubes[i,j].transform.position = new Vector3(i, 0, j);
                 cubes[i, j].transform.parent = this.transform;
 
-                // created an enemy where the enemy is supposed to go
-                // the problem is that I don't know how to change enemy's position
+                // created an enemy and player where the they are supposed to go
                 // Also I think this is probably not the best way to do it.
-                foreach(Character c in enemies) {
-                    if (c.x == i && c.getY() == j) {
-                        Instantiate(enemyPrefab, cubes[i, j].transform.position, Quaternion.identity);
-                    }
-                }
-                
+                CreatePlayers(enemies, i, j, true);
+                CreatePlayers(party, i, j, false);
             }
         }
+    }
+
+    private void CreatePlayers(IList<Character> chars, int i, int j, bool enemy) {
+        foreach(Character c in chars) {
+                if (c.x == i && c.getY() == j) {
+                    tempPos = cubes[i, j].transform.position;
+                    tempPos.y = cubes[i, j].transform.position.y + 1;
+                    if(enemy)
+                        Instantiate(enemyPrefab, tempPos, Quaternion.identity);
+                    else
+                        Instantiate(playerPrefab, tempPos, Quaternion.identity);
+                }
+            }
     }
 
     private void occupyTiles(IList<Character> list)
