@@ -8,6 +8,12 @@ public class BattleState : MonoBehaviour {
     private IList<Character> enemies;
     private TurnOrder order;
     private Character current;
+    private Vector3 tempPos;
+    public GameObject cubePrefab;
+    public GameObject enemyPrefab;
+    public GameObject playerPrefab;
+
+    
 
     // Use this for initialization
     void Start () {
@@ -32,7 +38,7 @@ public class BattleState : MonoBehaviour {
                 {
                     cubes[i, j].GetComponent<Renderer>().material.color = new Color(255, 255, 255);
                 }
-                else if(current.getY() == i && current.getX() == j)
+                else if(current.getY() == i && current.x == j) // changed the getter to default
                 {
                     cubes[i, j].GetComponent<Renderer>().material.color = new Color(255, 0, 0);
                 }
@@ -64,21 +70,41 @@ public class BattleState : MonoBehaviour {
         {
             for (int j = 0; j < cubes.GetLength(1); j++)
             {
-                cubes[i,j] = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                // This creates a instance of the cube prefab, we could also do this with
+                // players and enemies.
+                cubes[i, j] = Instantiate(cubePrefab); // different way of doing it.
+                // cubes[i,j] = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cubes[i,j].transform.position = new Vector3(i, 0, j);
                 cubes[i, j].transform.parent = this.transform;
-                
+
+                // created an enemy and player where the they are supposed to go
+                // Also I think this is probably not the best way to do it.
+                CreatePlayers(enemies, i, j, true);
+                CreatePlayers(party, i, j, false);
             }
         }
+    }
+
+    private void CreatePlayers(IList<Character> chars, int i, int j, bool enemy) {
+        foreach(Character c in chars) {
+                if (c.x == i && c.getY() == j) {
+                    tempPos = cubes[i, j].transform.position;
+                    tempPos.y = cubes[i, j].transform.position.y + 1;
+                    if(enemy)
+                        Instantiate(enemyPrefab, tempPos, Quaternion.identity);
+                    else
+                        Instantiate(playerPrefab, tempPos, Quaternion.identity);
+                }
+            }
     }
 
     private void occupyTiles(IList<Character> list)
     {
         foreach (Character c in list)
         {
-            if (c.getX() < board.GetLength(1) && c.getY() < board.GetLength(0))
+            if (c.x < board.GetLength(1) && c.getY() < board.GetLength(0))
             {
-                board[c.getY(), c.getX()].occupy();
+                board[c.getY(), c.x].occupy();
             }
         }
     }
@@ -87,4 +113,5 @@ public class BattleState : MonoBehaviour {
     {
         current = order.getNext();
     }
+
 }
